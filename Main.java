@@ -1,12 +1,8 @@
 package crudNoDb;
 
-import campoMinado.customExeptions.InvalidInputExeption;
-import campoMinado.customExeptions.OutOFRangeExeption;
 import crudNoDb.dataBase.DataBase;
 import crudNoDb.dataBase.FileDataBase;
 
-import java.lang.reflect.Type;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
@@ -123,10 +119,10 @@ public class Main {
             try {
                 int number = Integer.parseInt(scan.nextLine());
                 if (range && (number < min || number > max)) {
-                    throw new OutOFRangeExeption();
+                    throw new IllegalArgumentException();
                 }
                 return number;
-            } catch (OutOFRangeExeption e) {
+            } catch (IllegalArgumentException e) {
                 System.out.println("out of options");
             } catch (Exception e) {
                 System.out.println("invalid input");
