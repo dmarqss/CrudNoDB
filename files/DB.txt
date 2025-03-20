@@ -1,0 +1,4 @@
+0,mouse,150.0,red dragon,
+1,teclado,260.0,logitech,
+2,fone,145.0,havit,
+3,thinkpad,5000.0,lenovo,
