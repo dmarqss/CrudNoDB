@@ -1,7 +1,7 @@
 package crudNoDb;
 
-import crudNoDb.dataBase.DataBase;
-import crudNoDb.dataBase.FileDataBase;
+import crudNoDb.models.DataBase;
+import org.w3c.dom.ls.LSOutput;
 
 import java.util.Scanner;
 
@@ -9,9 +9,8 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
-        DataBase db = new DataBase();
-        FileDataBase file = new FileDataBase();
-        file.readAndAddOnDB();
+        DataBase dbList = new DataBase();
+        dbList.getFromFile();
         while (true) {
             System.out.println("========================");
             System.out.println("      Fake Data Base");
@@ -22,7 +21,11 @@ public class Main {
             System.out.println("(4)show products");
             System.out.println("(5)exit");
             System.out.println("========================");
-            int userInput = checkInputInt(true, 1, 5);
+            int userInput = checkInputInt();
+            if(!isOnRange(1,5,userInput)){
+                clearConsole();
+                continue;
+            }
             clearConsole();
             switch (userInput) {
                 case 1:
@@ -35,22 +38,22 @@ public class Main {
                     double priceInput = checkInputDouble();
                     clearConsole();
                     System.out.println("========================");
-                    db.addProduct(nameInput, brandInput, priceInput);
+                    dbList.addProduct(nameInput, brandInput, priceInput);
                     System.out.println("========================");
                     break;
                 case 2:
                     System.out.println("========================");
                     System.out.println("product id:");
-                    int idInput = checkInputInt(false, 0, 0);
+                    int idInput = checkInputInt();
                     clearConsole();
                     System.out.println("========================");
-                    db.deleteProduct(idInput);
+                    dbList.deleteProduct(idInput);
                     System.out.println("========================");
                     break;
                 case 3:
                     System.out.println("========================");
                     System.out.println("product id:");
-                    idInput = checkInputInt(false, 0, 0);
+                    idInput = checkInputInt();
                     System.out.println("product name:");
                     nameInput = scan.nextLine();
                     System.out.println("product brand:");
@@ -59,7 +62,7 @@ public class Main {
                     priceInput = checkInputDouble();
                     clearConsole();
                     System.out.println("========================");
-                    db.upadateProduct(idInput, nameInput, brandInput, priceInput);
+                    dbList.upadateProduct(idInput, nameInput, brandInput, priceInput);
                     System.out.println("========================");
                     break;
                 case 4:
@@ -69,23 +72,27 @@ public class Main {
                     System.out.println("(3)show by brand");
                     System.out.println("(4)show by price");
                     System.out.println("========================");
-                    userInput = checkInputInt(true, 1, 4);
+                    userInput = checkInputInt();
+                    if(!isOnRange(1,4,userInput)){
+                        clearConsole();
+                        continue;
+                    }
                     switch (userInput) {
                         case 1:
                             clearConsole();
-                            db.printAllProducts();
+                            dbList.printAllProducts();
                             break;
                         case 2:
                             clearConsole();
-                            db.printbyName();
+                            dbList.printByName();
                             break;
                         case 3:
                             clearConsole();
-                            db.printByBrand();
+                            dbList.printByBrand();
                             break;
                         case 4:
                             clearConsole();
-                            db.printBtPrice();
+                            dbList.printByPrice();
                             break;
                     }
             }
@@ -93,7 +100,7 @@ public class Main {
                 break;
             }
         }
-        file.save();
+        dbList.saveOnFile();
     }
 
     public static void clearConsole() {
@@ -108,27 +115,21 @@ public class Main {
             } catch (Exception e) {
                 System.out.println("invalid input");
             }
-
         }
-
     }
 
-    public static int checkInputInt(boolean range, int min, int max) {
+    public static int checkInputInt() {
         Scanner scan = new Scanner(System.in);
         while (true) {
             try {
-                int number = Integer.parseInt(scan.nextLine());
-                if (range && (number < min || number > max)) {
-                    throw new IllegalArgumentException();
-                }
-                return number;
-            } catch (IllegalArgumentException e) {
-                System.out.println("out of options");
+                return Integer.parseInt(scan.nextLine());
             } catch (Exception e) {
                 System.out.println("invalid input");
             }
         }
-
     }
 
+    public static boolean isOnRange(int min, int max, int number){
+        return number <= max && number >= min;
+    }
 }

@@ -15,7 +15,7 @@ public class Products {
         this.brand = brand;
     }
 
-    public String toDB() {
+    public String toSaveOnFile() {
         return id + "," + name + "," + price + "," + brand + ",";
     }
 
